@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { ChevronLeft } from "lucide-react";
 import { motion } from "framer-motion";
@@ -14,7 +16,7 @@ const BackButton: React.FC<BackButtonProps> = ({ onClick }) => {
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -20 }}
       transition={{ duration: 0.3 }}
-      className="absolute bottom-20 left-4" {/* Changed bottom-4 to bottom-20 */}
+      className="absolute bottom-20 left-4"
     >
       <Button
         variant="ghost"
