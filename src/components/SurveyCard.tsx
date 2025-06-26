@@ -26,7 +26,7 @@ const SurveyCard: React.FC = () => {
   const currentQuestion = questions[currentQuestionIndex];
   const progress = currentQuestionIndex >= 0 ? (currentQuestionIndex + 1) / questions.length : 0;
 
-  const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxa6S9zEcEMl8mChh5qgBSWKsskYwIB9rue7k5Un_ycXHmD320PCt1JEdj2dG8H4mrcsQ/exec"; // URL aggiornato
+  const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxa6S9zEcEMl8mChh5qgBSWKsskYwIB9rue7k5Un_ycXHmD320PC1JEdj2dG8H4mrcsQ/exec"; // URL aggiornato
 
   const handleStartSurvey = () => {
     setSurveyStarted(true);
@@ -156,7 +156,7 @@ const SurveyCard: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.5, type: "spring", stiffness: 100 }}
+            transition={{ duration: 0.3, type: "spring", stiffness: 100 }}
             className="flex flex-col items-center text-center p-6 sm:p-8"
           >
             <h2 className="text-2xl sm:text-3xl font-semibold mb-4 text-gray-800 dark:text-gray-100">

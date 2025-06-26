@@ -14,7 +14,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ progress }) => {
         className="h-full gradient-fill rounded-full"
         initial={{ width: "0%" }}
         animate={{ width: `${progress * 100}%` }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
       />
     </div>
   );

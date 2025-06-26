@@ -14,7 +14,7 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onStart }) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
-      transition={{ duration: 0.5, type: "spring", stiffness: 100 }}
+      transition={{ duration: 0.3, type: "spring", stiffness: 100 }}
       className="flex flex-col items-center text-center p-6 sm:p-8"
     >
       <h2 className="text-2xl sm:text-3xl font-semibold mb-3 text-gray-800 dark:text-gray-100">

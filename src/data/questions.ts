@@ -82,7 +82,7 @@ export const questions: Question[] = [
   },
   {
     id: "q10",
-    text: "Cosa potremmo migliorare, secondo te?",
+    text: "In una frase, cosa potremmo migliorare, secondo te?",
     type: "textarea",
   },
 ];

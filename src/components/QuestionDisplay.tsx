@@ -48,7 +48,7 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
-      transition={{ duration: 0.5, type: "spring", stiffness: 100 }}
+      transition={{ duration: 0.3, type: "spring", stiffness: 100 }}
       className="flex flex-col items-center text-center p-6 sm:p-8 w-full"
     >
       <h2 className="text-xl sm:text-2xl font-semibold mb-8 text-gray-800 dark:text-gray-100 min-h-[60px] flex items-center justify-center">
