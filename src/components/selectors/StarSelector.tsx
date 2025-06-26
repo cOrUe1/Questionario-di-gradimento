@@ -4,6 +4,7 @@ import React from "react";
 import { Star } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button"; // Import Button
 
 interface StarSelectorProps {
   value: number | null;
@@ -59,14 +60,19 @@ const StarSelector: React.FC<StarSelectorProps> = ({
         ))}
       </div>
       {includeNoNeed && (
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={onNoNeed}
-          className="text-sm text-gray-600 dark:text-gray-400 hover:underline mt-2"
+        <motion.div
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          className="w-full max-w-xs" // Added max-w-xs to match OptionSelector width
         >
-          Non ho avuto bisogno
-        </motion.button>
+          <Button
+            variant="outline"
+            className="w-full py-3 text-base h-auto"
+            onClick={onNoNeed}
+          >
+            Non ho avuto bisogno
+          </Button>
+        </motion.div>
       )}
     </div>
   );
