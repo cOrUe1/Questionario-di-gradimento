@@ -7,7 +7,7 @@ import IntroScreen from "./IntroScreen";
 import QuestionDisplay from "./QuestionDisplay";
 import ProgressBar from "./ProgressBar";
 import BackButton from "./BackButton";
-import NextButton from "./NextButton"; // Import the new NextButton
+import NextButton from "./NextButton";
 import { Button } from "@/components/ui/button";
 import { showSuccess, showError } from "@/utils/toast";
 
@@ -26,6 +26,8 @@ const SurveyCard: React.FC = () => {
   const currentQuestion = questions[currentQuestionIndex];
   const progress = currentQuestionIndex >= 0 ? (currentQuestionIndex + 1) / questions.length : 0;
 
+  const GOOGLE_APPS_SCRIPT_URL = "YOUR_APPS_SCRIPT_WEB_APP_URL"; // *** SOSTITUISCI QUESTO CON IL TUO URL ***
+
   const handleStartSurvey = () => {
     setSurveyStarted(true);
     setCurrentQuestionIndex(0);
@@ -38,6 +40,29 @@ const SurveyCard: React.FC = () => {
     }
   }, [currentQuestion]);
 
+  const handleSubmitSurvey = useCallback(async () => {
+    try {
+      const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors", // Important for Apps Script web apps
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(answers),
+      });
+
+      // Since mode is 'no-cors', response.ok will always be false.
+      // We rely on the Apps Script to handle the data and assume success if no network error.
+      console.log("Dati del sondaggio inviati:", answers);
+      showSuccess("Grazie per il tuo tempo! 🎉 Le risposte sono state salvate con successo.");
+    } catch (error) {
+      console.error("Si è verificato un errore durante l'invio del sondaggio:", error);
+      showError("Si è verificato un errore durante il salvataggio delle risposte.");
+    } finally {
+      setSurveyCompleted(true);
+    }
+  }, [answers, GOOGLE_APPS_SCRIPT_URL]);
+
   const handleNextQuestion = useCallback(() => {
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex((prev) => {
@@ -46,27 +71,9 @@ const SurveyCard: React.FC = () => {
         return newIndex;
       });
     } else {
-      setSurveyCompleted(true);
-      // Simulate API submission
-      console.log("Dati del sondaggio completati:", answers);
-      showSuccess("Grazie per il tuo tempo! 🎉 Le risposte sono state salvate con successo.");
-      // In a real app, you would send this to your backend:
-      // fetch("/api/submit", {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(answers),
-      // })
-      //   .then((res) => res.json())
-      //   .then((data) => {
-      //     console.log("Submission successful:", data);
-      //     showSuccess("Grazie per il tuo tempo! 🎉 Le risposte sono state salvate con successo.");
-      //   })
-      //   .catch((error) => {
-      //     console.error("Submission failed:", error);
-      //     showError("Si è verificato un errore durante il salvataggio delle risposte.");
-      //   });
+      handleSubmitSurvey(); // Call the submission function when survey is completed
     }
-  }, [currentQuestionIndex, answers, questions.length]);
+  }, [currentQuestionIndex, questions.length, handleSubmitSurvey]);
 
   const handlePreviousQuestion = useCallback(() => {
     if (currentQuestionIndex > 0) {
