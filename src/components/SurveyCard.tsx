@@ -6,7 +6,7 @@ import QuestionDisplay from "./QuestionDisplay";
 import ProgressBar from "./ProgressBar";
 import BackButton from "./BackButton";
 import { Button } from "@/components/ui/button";
-import { toast } from "@/utils/toast";
+import { showSuccess, showError } from "@/utils/toast"; // Modifica qui
 
 interface Answers {
   [key: string]: any;
@@ -39,7 +39,7 @@ const SurveyCard: React.FC = () => {
       setSurveyCompleted(true);
       // Simulate API submission
       console.log("Dati del sondaggio completati:", answers);
-      toast.success("Grazie per il tuo tempo! 🎉 Le risposte sono state salvate con successo.");
+      showSuccess("Grazie per il tuo tempo! 🎉 Le risposte sono state salvate con successo."); // Modifica qui
       // In a real app, you would send this to your backend:
       // fetch("/api/submit", {
       //   method: "POST",
@@ -49,11 +49,11 @@ const SurveyCard: React.FC = () => {
       //   .then((res) => res.json())
       //   .then((data) => {
       //     console.log("Submission successful:", data);
-      //     toast.success("Grazie per il tuo tempo! 🎉 Le risposte sono state salvate con successo.");
+      //     showSuccess("Grazie per il tuo tempo! 🎉 Le risposte sono state salvate con successo.");
       //   })
       //   .catch((error) => {
       //     console.error("Submission failed:", error);
-      //     toast.error("Si è verificato un errore durante il salvataggio delle risposte.");
+      //     showError("Si è verificato un errore durante il salvataggio delle risposte.");
       //   });
     }
   }, [currentQuestionIndex, answers, questions.length]);
