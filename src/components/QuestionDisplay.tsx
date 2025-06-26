@@ -94,7 +94,7 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
               disabled={!answer}
               className="mt-6 px-8 py-3 text-lg gradient-fill text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
             >
-              Continua
+              Invia
             </Button>
           </div>
         )}
