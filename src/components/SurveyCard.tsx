@@ -6,7 +6,7 @@ import QuestionDisplay from "./QuestionDisplay";
 import ProgressBar from "./ProgressBar";
 import BackButton from "./BackButton";
 import { Button } from "@/components/ui/button";
-import { showSuccess, showError } from "@/utils/toast"; // Modifica qui
+import { showSuccess, showError } from "@/utils/toast";
 
 interface Answers {
   [key: string]: any;
@@ -39,7 +39,7 @@ const SurveyCard: React.FC = () => {
       setSurveyCompleted(true);
       // Simulate API submission
       console.log("Dati del sondaggio completati:", answers);
-      showSuccess("Grazie per il tuo tempo! 🎉 Le risposte sono state salvate con successo."); // Modifica qui
+      showSuccess("Grazie per il tuo tempo! 🎉 Le risposte sono state salvate con successo.");
       // In a real app, you would send this to your backend:
       // fetch("/api/submit", {
       //   method: "POST",
@@ -141,7 +141,7 @@ const SurveyCard: React.FC = () => {
 
       {surveyStarted && !surveyCompleted && (
         <>
-          <div className="absolute bottom-4 w-[calc(100%-32px)] left-4 right-4">
+          <div className="absolute bottom-12 w-[calc(100%-32px)] left-4 right-4"> {/* Changed bottom-4 to bottom-12 */}
             <ProgressBar progress={progress} />
           </div>
           {currentQuestionIndex > 0 && (

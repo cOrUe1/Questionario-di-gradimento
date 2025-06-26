@@ -81,9 +81,8 @@ export const questions: Question[] = [
   },
   {
     id: "q11",
-    text: "Ti rivolgeresti nuovamente a noi per arredare altri ambienti?",
-    type: "stars",
-    min: 1,
-    max: 5,
+    text: "Ti rivolgeresti nuovamente a noi per arredare altri ambienti della tua casa?",
+    type: "options",
+    options: ["❌ No", "🤔 Forse", "✅ Probabilmente", "✅✅ Sicuramente"],
   },
 ];
