@@ -54,7 +54,7 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
       </h2>
 
       <div className="w-full flex justify-center mb-8">
-        {question.type === "stars" && question.min && question.max && (
+        {question.type === "stars" && question.min !== undefined && question.max !== undefined && (
           <StarSelector
             value={answer}
             onChange={handleStarChange}
@@ -64,7 +64,7 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
             onNoNeed={handleNoNeed}
           />
         )}
-        {question.type === "circles" && question.min && question.max && (
+        {question.type === "circles" && question.min !== undefined && question.max !== undefined && (
           <CircleSelector
             value={answer}
             onChange={handleCircleChange}
