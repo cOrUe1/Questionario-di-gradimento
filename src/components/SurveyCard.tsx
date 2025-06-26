@@ -5,6 +5,7 @@ import IntroScreen from "./IntroScreen";
 import QuestionDisplay from "./QuestionDisplay";
 import ProgressBar from "./ProgressBar";
 import BackButton from "./BackButton";
+import NextButton from "./NextButton"; // Import the new NextButton
 import { Button } from "@/components/ui/button";
 import { showSuccess, showError } from "@/utils/toast";
 
@@ -17,6 +18,8 @@ const SurveyCard: React.FC = () => {
   const [answers, setAnswers] = useState<Answers>({});
   const [surveyStarted, setSurveyStarted] = useState(false);
   const [surveyCompleted, setSurveyCompleted] = useState(false);
+  const [touchStartX, setTouchStartX] = useState(0);
+  const [highestQuestionIndexReached, setHighestQuestionIndexReached] = useState(-1); // Tracks the furthest index reached
 
   const currentQuestion = questions[currentQuestionIndex];
   const progress = currentQuestionIndex >= 0 ? (currentQuestionIndex + 1) / questions.length : 0;
@@ -24,6 +27,7 @@ const SurveyCard: React.FC = () => {
   const handleStartSurvey = () => {
     setSurveyStarted(true);
     setCurrentQuestionIndex(0);
+    setHighestQuestionIndexReached(0);
   };
 
   const handleAnswer = useCallback((value: any) => {
@@ -34,7 +38,11 @@ const SurveyCard: React.FC = () => {
 
   const handleNextQuestion = useCallback(() => {
     if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex((prev) => prev + 1);
+      setCurrentQuestionIndex((prev) => {
+        const newIndex = prev + 1;
+        setHighestQuestionIndexReached((prevHighest) => Math.max(prevHighest, newIndex));
+        return newIndex;
+      });
     } else {
       setSurveyCompleted(true);
       // Simulate API submission
@@ -72,8 +80,7 @@ const SurveyCard: React.FC = () => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (surveyStarted && !surveyCompleted) {
         if (event.key === "ArrowRight") {
-          // Only advance if current question has an answer (for auto-advance types)
-          // For textarea, the button handles next
+          // Allow advancing with arrow key if an answer exists or if it's a textarea and there's text
           if (currentQuestion?.type !== "textarea" && answers[currentQuestion?.id || ""]) {
             handleNextQuestion();
           } else if (currentQuestion?.type === "textarea" && answers[currentQuestion?.id || ""]) {
@@ -89,12 +96,38 @@ const SurveyCard: React.FC = () => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [surveyStarted, surveyCompleted, currentQuestion, answers, handleNextQuestion, handlePreviousQuestion]);
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStartX(e.touches[0].clientX);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    const touchEndX = e.changedTouches[0].clientX;
+    const deltaX = touchEndX - touchStartX;
+
+    if (surveyStarted && !surveyCompleted) {
+      if (deltaX > 50) { // Swipe right for previous
+        handlePreviousQuestion();
+      } else if (deltaX < -50) { // Swipe left for next
+        // Only allow swipe forward if the current question is answered (for auto-advance types)
+        // For textarea, the button handles next, so swipe won't auto-advance here.
+        if (currentQuestion?.type !== "textarea" && answers[currentQuestion?.id || ""]) {
+          handleNextQuestion();
+        } else if (currentQuestion?.type === "textarea" && answers[currentQuestion?.id || ""]) {
+          // If it's a textarea, and there's an answer, allow swipe to next
+          handleNextQuestion();
+        }
+      }
+    }
+  };
+
   return (
     <motion.div
       className="relative bg-white dark:bg-gray-900 rounded-xl shadow-lg p-4 sm:p-6 w-full max-w-md mx-auto flex flex-col min-h-[380px] sm:min-h-[420px] justify-between"
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5, type: "spring", stiffness: 100 }}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
     >
       <AnimatePresence mode="wait">
         {!surveyStarted && !surveyCompleted && (
@@ -130,6 +163,7 @@ const SurveyCard: React.FC = () => {
                 setSurveyCompleted(false);
                 setCurrentQuestionIndex(-1);
                 setAnswers({});
+                setHighestQuestionIndexReached(-1); // Reset highest reached index
               }}
               className="px-8 py-3 text-lg gradient-fill text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
             >
@@ -141,11 +175,14 @@ const SurveyCard: React.FC = () => {
 
       {surveyStarted && !surveyCompleted && (
         <>
-          <div className="absolute bottom-12 w-[calc(100%-32px)] left-4 right-4"> {/* Changed bottom-4 to bottom-12 */}
+          <div className="absolute bottom-12 w-[calc(100%-32px)] left-4 right-4">
             <ProgressBar progress={progress} />
           </div>
           {currentQuestionIndex > 0 && (
             <BackButton onClick={handlePreviousQuestion} />
+          )}
+          {currentQuestionIndex < highestQuestionIndexReached && (
+            <NextButton onClick={handleNextQuestion} />
           )}
         </>
       )}
