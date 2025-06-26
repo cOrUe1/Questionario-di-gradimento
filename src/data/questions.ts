@@ -20,7 +20,7 @@ export const questions: Question[] = [
   },
   {
     id: "q2",
-    text: "Quanto è stato semplice acquistare e completare l’ordine?",
+    text: "Quanto è stato semplice scegliere e completare l’ordine?",
     type: "stars",
     min: 1,
     max: 5,
@@ -75,14 +75,14 @@ export const questions: Question[] = [
     includeNoNeed: true,
   },
   {
-    id: "q10",
-    text: "Cosa potremmo migliorare, secondo te?",
-    type: "textarea",
-  },
-  {
     id: "q11",
     text: "Ti rivolgeresti nuovamente a noi per arredare altri ambienti della tua casa?",
     type: "options",
-    options: ["❌ No", "🤔 Forse", "✅ Probabilmente", "✅✅ Sicuramente"],
+    options: ["✅✅ Sicuramente", "✅ Probabilmente", "🤔 Forse", "❌ No"],
+  },
+  {
+    id: "q10",
+    text: "Cosa potremmo migliorare, secondo te?",
+    type: "textarea",
   },
 ];
