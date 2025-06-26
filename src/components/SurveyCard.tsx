@@ -27,7 +27,7 @@ const SurveyCard: React.FC = () => {
   const progress = currentQuestionIndex >= 0 ? (currentQuestionIndex + 1) / questions.length : 0;
 
   // *** VERIFICA E AGGIORNA QUESTO URL SE È CAMBIATO DOPO LA RIDISTRIBUZIONE ***
-  const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxa6S9zEcEMl8mChh5qgBSWKsskYwIB9rue7k5Un_ycXHmD320PC1JEdj2dG8H4mrcsQ/exec"; 
+  const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyAdjsA3B-iuv-U3jJVyzFm02HB6DWvdq1b9nsh0ntE_-Xw8zSG5uqmPZDM8NpvHf32lQ/exec"; 
 
   const handleStartSurvey = () => {
     setSurveyStarted(true);
