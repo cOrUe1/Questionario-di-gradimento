@@ -8,12 +8,14 @@ import CircleSelector from "./selectors/CircleSelector";
 import OptionSelector from "./selectors/OptionSelector";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 
 interface QuestionDisplayProps {
   question: Question;
-  answer: any;
-  onAnswer: (value: any) => void;
+  answer: string | number | null;
+  onAnswer: (value: string | number) => void;
   onNext: () => void;
+  isSubmitting: boolean;
 }
 
 const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
@@ -21,6 +23,7 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
   answer,
   onAnswer,
   onNext,
+  isSubmitting,
 }) => {
   const handleStarChange = (value: number) => {
     onAnswer(value);
@@ -91,10 +94,14 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
             />
             <Button
               onClick={onNext}
-              disabled={!answer}
+              disabled={!answer || isSubmitting}
               className="mt-6 px-8 py-3 text-lg gradient-fill text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
             >
-              Invia
+              {isSubmitting ? (
+                <Loader2 className="h-5 w-5 animate-spin" />
+              ) : (
+                "Invia"
+              )}
             </Button>
           </div>
         )}

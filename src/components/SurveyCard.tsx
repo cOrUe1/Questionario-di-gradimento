@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { showSuccess, showError } from "@/utils/toast";
 
 interface Answers {
-  [key: string]: any;
+  [key: string]: string | number | null;
 }
 
 const SurveyCard: React.FC = () => {
@@ -22,6 +22,7 @@ const SurveyCard: React.FC = () => {
   const [surveyCompleted, setSurveyCompleted] = useState(false);
   const [touchStartX, setTouchStartX] = useState(0);
   const [highestQuestionIndexReached, setHighestQuestionIndexReached] = useState(-1); // Tracks the furthest index reached
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const currentQuestion = questions[currentQuestionIndex];
   const progress = currentQuestionIndex >= 0 ? (currentQuestionIndex + 1) / questions.length : 0;
@@ -35,15 +36,16 @@ const SurveyCard: React.FC = () => {
     setHighestQuestionIndexReached(0);
   };
 
-  const handleAnswer = useCallback((value: any) => {
+  const handleAnswer = useCallback((value: string | number) => {
     if (currentQuestion) {
       setAnswers((prev) => ({ ...prev, [currentQuestion.id]: value }));
     }
   }, [currentQuestion]);
 
   const handleSubmitSurvey = useCallback(async () => {
+    setIsSubmitting(true);
     try {
-      const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
+      await fetch(GOOGLE_APPS_SCRIPT_URL, {
         method: "POST",
         mode: "no-cors", // Important for Apps Script web apps
         headers: {
@@ -60,11 +62,13 @@ const SurveyCard: React.FC = () => {
       console.error("Si è verificato un errore durante l'invio del sondaggio:", error);
       showError("Si è verificato un errore durante il salvataggio delle risposte.");
     } finally {
+      setIsSubmitting(false);
       setSurveyCompleted(true);
     }
   }, [answers, GOOGLE_APPS_SCRIPT_URL]);
 
   const handleNextQuestion = useCallback(() => {
+    if (isSubmitting) return;
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex((prev) => {
         const newIndex = prev + 1;
@@ -74,7 +78,7 @@ const SurveyCard: React.FC = () => {
     } else {
       handleSubmitSurvey(); // Call the submission function when survey is completed
     }
-  }, [currentQuestionIndex, questions.length, handleSubmitSurvey]);
+  }, [currentQuestionIndex, handleSubmitSurvey, isSubmitting]);
 
   const handlePreviousQuestion = useCallback(() => {
     if (currentQuestionIndex > 0) {
@@ -150,6 +154,7 @@ const SurveyCard: React.FC = () => {
             answer={answers[currentQuestion.id] || null}
             onAnswer={handleAnswer}
             onNext={handleNextQuestion}
+            isSubmitting={isSubmitting}
           />
         )}
         {surveyCompleted && (
