@@ -18,7 +18,7 @@ function doPost(e) {
         // Skip timestamp as it's already added
         continue;
       }
-      rowData.push(data[header] || ""); // Add answer or empty string if not found
+      rowData.push(data.hasOwnProperty(header) ? data[header] : ""); // Preserve 0 values
     }
 
     sheet.appendRow(rowData);

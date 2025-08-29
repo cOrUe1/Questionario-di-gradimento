@@ -15,7 +15,7 @@ export const questions: Question[] = [
     id: "q1",
     text: "Con che probabilità consiglieresti il nostro negozio a un amico o familiare?",
     type: "circles",
-    min: 0,
+    min: 1,
     max: 10,
   },
   {
