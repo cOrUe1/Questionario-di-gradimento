@@ -21,7 +21,7 @@ const IntroScreen: React.FC<IntroScreenProps> = ({ onStart }) => {
         Aiutaci a migliorare!
       </h2>
       <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 mb-8">
-        Ci farebbe molto piacere ricevere il tuo parere. Bastano solo 2 minuti per questo breve sondaggio.
+        Ci farebbe molto piacere ricevere il tuo parere. Bastano solo 60 secondi per questo breve sondaggio.
       </p>
       <Button
         onClick={onStart}
